@@ -102,15 +102,20 @@ const arr = [{ "id": 1, "first_name": "Chadwick", "last_name": "Ayre", "email": 
 const table = document.getElementById('table');
 const tbody = document.getElementById('tbody');
 const serachBar = document.getElementById('search-bar');
+
+// -----------------------adding students into table-----------------------
+
 function addStudent(student){
     const tr = document.createElement('tr');
-    
+
+    let result = student.passing == true? "passing" : "failed"
+
     tr.innerHTML = `<td>${student.id}</td>
     <td> ${student.first_name + " "+student.last_name} </td>
     <td>${student.gender}</td>
     <td>${student.class}</td>
     <td>${student.marks}</td>
-    <td>${student.passing}</td>
+    <td>${result}</td>
     <td>${student.email}</td>
     `;
 
@@ -118,11 +123,16 @@ function addStudent(student){
 }
 
 //                 -------------------------------- search bar --------------------------
+
 function updateResult(query){
     tbody.innerHTML = '';
 
-    const filteredItems = arr.filter((item) =>
-    item.first_name.toLowerCase().includes(query.toLowerCase())
+    const filteredItems = arr.filter((item) => {
+        return (
+            item.first_name.toLowerCase().includes(query.toLowerCase()) || item.last_name.toLowerCase().includes(query.toLowerCase()) ||
+            item.email.toLowerCase().includes(query.toLowerCase())
+        )
+    }
   );
 
   filteredItems.forEach((item) => {
@@ -208,8 +218,8 @@ genderSort.addEventListener('click',()=>{
 // button functions/ sorting logic
 function sortByName() {
     arr.sort((a,b)=>{
-        const nameA = a.first_name.toLowerCase();
-        const nameB = b.first_name.toLowerCase();
+        const nameA = a.first_name.toLowerCase()+a.last_name;
+        const nameB = b.first_name.toLowerCase()+b.last_name;
         
         if (nameA < nameB) return -1;
         if (nameA > nameB) return 1;
@@ -220,9 +230,9 @@ function sortByName() {
 
 function sortByNameZtoA() {
     arr.sort((a,b)=>{
-        const nameA = a.first_name.toLowerCase();
-        const nameB = b.first_name.toLowerCase();
-        
+        const nameA = a.first_name.toLowerCase()+a.last_name;
+        const nameB = b.first_name.toLowerCase()+b.last_name;
+        console.log(nameA,nameB)
         if (nameA < nameB) return 1;
         if (nameA > nameB) return -1;
         return 0;
